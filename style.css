@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap');
+@import 'tailwindcss';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(219, 216, 212);
+}
+
+* {
+  font-family: 'Atkinson Hyperlegible Mono', monospace;
+  color: rgb(54, 54, 54);
+}
