@@ -7,7 +7,7 @@ import ThreeObject from './ThreeObject.vue'
     <div class="flex flex-row justify-between">
       <img src="/baken.png" class="w-14/20 block h-auto object-contain" />
       <div class="w-5/20">
-        <ThreeObject />
+        <ThreeObject source="/baken.3dm" :size="100" />
       </div>
     </div>
   </div>

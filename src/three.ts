@@ -8,7 +8,12 @@ export class Object3D {
   renderer: THREE.WebGLRenderer
   object: THREE.Object3D | null = null
   canvas: HTMLCanvasElement
-  constructor(canvas: HTMLCanvasElement, fileName: string, sizeScaler: number) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    fileName: string,
+    sizeScaler: number,
+    rotation: [number, number, number],
+  ) {
     this.canvas = canvas
 
     this.scene = new THREE.Scene()
@@ -31,6 +36,7 @@ export class Object3D {
       if (this.object) {
         this.scene.add(this.object)
         this.resize()
+        this.object.quaternion.setFromEuler(new THREE.Euler(rotation[0], rotation[1], rotation[2]))
         this.animate()
       }
     })
@@ -107,8 +113,13 @@ export class Object3D {
     })
   }
 }
-export function createObject3D(canvas: HTMLCanvasElement, fileName: string, sizeScaler: number) {
-  return new Object3D(canvas, fileName, sizeScaler)
+export function createObject3D(
+  canvas: HTMLCanvasElement,
+  fileName: string,
+  sizeScaler: number,
+  rotation: [number, number, number],
+): Object3D {
+  return new Object3D(canvas, fileName, sizeScaler, rotation)
 }
 
 export function resetObject(world: Object3D) {

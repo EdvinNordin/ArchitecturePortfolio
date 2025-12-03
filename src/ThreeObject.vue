@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, defineProps } from 'vue'
 import { resetObject, cleanupThreeJS, createObject3D, Object3D } from './three'
+
+interface Props {
+  source: string
+  size: number
+  rotation?: [number, number, number]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  rotation: () => [0, 0, 0],
+})
 
 const container = ref<HTMLCanvasElement | null>(null)
 let object3d: Object3D | null = null
-const sizeScaler = 100
 
 onMounted(() => {
-  if (container.value) object3d = createObject3D(container.value, '/baken.3dm', sizeScaler)
+  if (container.value)
+    object3d = createObject3D(container.value, props.source, props.size, props.rotation)
 })
 
 onUnmounted(() => {
@@ -20,8 +30,8 @@ function resetRotation() {
 </script>
 
 <template>
+  <button @click="resetRotation" class="absolute pl-[10%]">RESET 3D VIEW</button>
   <canvas ref="container" class="w-full h-full"></canvas>
-  <button @click="resetRotation" class="top-10 right-10 absolute">RESET 3D VIEW</button>
 </template>
 
 <style scoped></style>
