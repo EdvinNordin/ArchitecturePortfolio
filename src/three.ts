@@ -8,6 +8,7 @@ export class Object3D {
   renderer: THREE.WebGLRenderer
   object: THREE.Object3D | null = null
   canvas: HTMLCanvasElement
+  startRotation: [number, number, number]
   constructor(
     canvas: HTMLCanvasElement,
     fileName: string,
@@ -40,6 +41,7 @@ export class Object3D {
         this.animate()
       }
     })
+    this.startRotation = rotation
 
     this.eventListeners()
 
@@ -59,7 +61,7 @@ export class Object3D {
     const pivot = new THREE.Object3D()
     pivot.add(object)
     object.rotateOnAxis(new THREE.Vector3(1, 0, 0), -Math.PI / 2)
-    const scaleFactor = 0.000002 * sizeScaler
+    const scaleFactor = 0.0002 * sizeScaler
     object.scale.set(scaleFactor, scaleFactor, scaleFactor)
     const box = new THREE.Box3().setFromObject(object, false)
     const center = new THREE.Vector3()
@@ -92,27 +94,52 @@ export class Object3D {
         const dx = event.movementX
         const dy = event.movementY
         const rotationSpeed = 0.005
+        this.rotate(dx, dy, rotationSpeed)
+      }
+    })
 
-        // Horizontal rotation around world's UP (feels natural)
-        const qY = new THREE.Quaternion()
-        qY.setFromAxisAngle(new THREE.Vector3(0, 1, 0), dx * rotationSpeed)
+    let touchPosition: { x: number; y: number } | null = null
+    this.canvas.addEventListener('touchstart', (event) => {
+      if (event.touches[0]) {
+        event.preventDefault()
+        touchPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY }
+      }
+    })
+    this.canvas.addEventListener('touchmove', (event) => {
+      if (this.object && event.touches[0] && touchPosition) {
+        event.preventDefault()
+        const dx = event.touches[0].clientX - touchPosition.x
+        const dy = event.touches[0].clientY - touchPosition.y
 
-        // Vertical rotation around camera's RIGHT (fixes upside-down problem!)
-        const cameraRight = new THREE.Vector3()
-        this.camera.getWorldDirection(cameraRight)
-        cameraRight.cross(new THREE.Vector3(0, 1, 0)).normalize()
+        const rotationSpeed = 0.003
+        this.rotate(dx, dy, rotationSpeed)
 
-        const qX = new THREE.Quaternion()
-        qX.setFromAxisAngle(cameraRight, dy * rotationSpeed)
-
-        // Apply combined rotation
-        this.object.quaternion.multiplyQuaternions(qY, this.object.quaternion)
-        this.object.quaternion.multiplyQuaternions(qX, this.object.quaternion)
-        this.animate()
+        touchPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY }
       }
     })
   }
+  rotate(dx: number, dy: number, rotationSpeed: number) {
+    if (!this.object) return
+
+    // Horizontal rotation around world's UP (feels natural)
+    const qY = new THREE.Quaternion()
+    qY.setFromAxisAngle(new THREE.Vector3(0, 1, 0), dx * rotationSpeed)
+
+    // Vertical rotation around camera's RIGHT (fixes upside-down problem!)
+    const cameraRight = new THREE.Vector3()
+    this.camera.getWorldDirection(cameraRight)
+    cameraRight.cross(new THREE.Vector3(0, 1, 0)).normalize()
+
+    const qX = new THREE.Quaternion()
+    qX.setFromAxisAngle(cameraRight, dy * rotationSpeed)
+
+    // Apply combined rotation
+    this.object.quaternion.multiplyQuaternions(qY, this.object.quaternion)
+    this.object.quaternion.multiplyQuaternions(qX, this.object.quaternion)
+    this.animate()
+  }
 }
+
 export function createObject3D(
   canvas: HTMLCanvasElement,
   fileName: string,
@@ -124,7 +151,12 @@ export function createObject3D(
 
 export function resetObject(world: Object3D) {
   if (world && world.object) {
-    world.object.rotation.set(0, 0, 0)
+    world.object.rotation.set(
+      world.startRotation[0],
+      world.startRotation[1],
+      world.startRotation[2],
+    )
+
     world.animate()
   }
 }

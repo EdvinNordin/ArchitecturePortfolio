@@ -9,8 +9,8 @@ import ThreeObject from './ThreeObject.vue'
     </div>
   </div>
   <div class="h-screen p-20">
-    <div class="w-full">
-      <ThreeObject source="/net.3dm" :size="180" :rotation="[0.2, 0.5, 0]" />
+    <div class="w-3/5 h-full mx-auto">
+      <ThreeObject source="/baken.3dm" :size="1" />
     </div>
   </div>
 </template>

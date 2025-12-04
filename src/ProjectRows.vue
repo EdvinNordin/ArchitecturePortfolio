@@ -7,7 +7,7 @@ import ThreeObject from './ThreeObject.vue'
     <div class="flex flex-row justify-between">
       <img src="/baken.png" class="w-14/20 block h-auto object-contain" />
       <div class="w-5/20">
-        <ThreeObject source="/baken.3dm" :size="100" />
+        <ThreeObject source="/net.3dm" :size="1.3" :rotation="[0.2, -0.5, 0]" />
       </div>
     </div>
   </div>

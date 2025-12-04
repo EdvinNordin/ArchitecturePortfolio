@@ -30,8 +30,16 @@ function resetRotation() {
 </script>
 
 <template>
-  <button @click="resetRotation" class="absolute pl-[10%]">RESET 3D VIEW</button>
-  <canvas ref="container" class="w-full h-full"></canvas>
+  <div class="relative w-full h-full">
+    <h1
+      @click="resetRotation"
+      class="absolute top-0 right-0 font-bold py-1 px-2 m-2 rounded z-10 hover:cursor-pointer"
+    >
+      RESET 3D VIEW
+    </h1>
+
+    <canvas ref="container" class="w-full h-full"></canvas>
+  </div>
 </template>
 
 <style scoped></style>
