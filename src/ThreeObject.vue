@@ -33,7 +33,7 @@ function resetRotation() {
   <div class="relative w-full h-full">
     <h1
       @click="resetRotation"
-      class="absolute top-0 right-0 font-bold py-1 px-2 m-2 rounded z-10 hover:cursor-pointer"
+      class="absolute top-0 right-0 font-bold py-1 px-2 m-2 rounded z-1 text-xs hover:cursor-pointer"
     >
       RESET 3D VIEW
     </h1>
