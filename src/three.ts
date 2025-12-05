@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-// @ts-expect-error: three examples module has no included type declarations
 import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
 
 export class Object3D {
@@ -111,7 +110,7 @@ export class Object3D {
         const dx = event.touches[0].clientX - touchPosition.x
         const dy = event.touches[0].clientY - touchPosition.y
 
-        const rotationSpeed = 0.003
+        const rotationSpeed = 0.005
         this.rotate(dx, dy, rotationSpeed)
 
         touchPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY }

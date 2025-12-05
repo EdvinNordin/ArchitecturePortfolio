@@ -6,6 +6,7 @@ import ProjectRows from './ProjectRows.vue'
 <template>
   <div>
     <LandingPage />
+
     <ProjectRows />
   </div>
 </template>
