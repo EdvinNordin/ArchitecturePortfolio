@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+// @ts-ignore
 import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
 
 export class Object3D {
